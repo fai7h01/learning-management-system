@@ -23,4 +23,60 @@ public class Course extends BaseEntity {
     private Set<Lesson> lessons = new HashSet<>();
     @ManyToMany(mappedBy = "courses")
     private Set<Student> students = new HashSet<>();
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getCoinsPaid() {
+        return coinsPaid;
+    }
+
+    public void setCoinsPaid(BigDecimal coinsPaid) {
+        this.coinsPaid = coinsPaid;
+    }
+
+    public CourseSettings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(CourseSettings settings) {
+        this.settings = settings;
+    }
+
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
 }

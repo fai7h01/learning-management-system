@@ -12,7 +12,6 @@ import java.time.Instant;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler({BaseException.class, RuntimeException.class, Exception.class})
     public ResponseEntity<ErrorResponse<?>> handleExceptions(Exception ex, WebRequest request) {
         HttpStatus status;
@@ -21,7 +20,7 @@ public class GlobalExceptionHandler {
         if (ex instanceof BaseException baseException) {
             status = baseException.getStatus();
             message = baseException.getMessage();
-            message = baseException.getErrorDetails();
+            errorDetails = baseException.getErrorDetails();
         } else if (ex instanceof NullPointerException) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             message = "Null pointer exception occurred";

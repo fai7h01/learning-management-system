@@ -6,7 +6,8 @@ import com.leverx.lms.learningmanagementsystem.student.entity.Student;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "courses")
@@ -19,7 +20,7 @@ public class Course extends BaseEntity {
     @OneToOne
     private CourseSettings settings;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Lesson> lesson;
+    private Set<Lesson> lessons = new HashSet<>();
     @ManyToMany(mappedBy = "courses")
-    private List<Student> students;
+    private Set<Student> students = new HashSet<>();
 }

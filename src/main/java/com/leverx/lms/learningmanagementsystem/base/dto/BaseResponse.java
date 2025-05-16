@@ -1,10 +1,12 @@
 package com.leverx.lms.learningmanagementsystem.base.dto;
 
-import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 
-@Builder
+@Data
+@SuperBuilder
 public class BaseResponse<T> {
 
     private String requestId;

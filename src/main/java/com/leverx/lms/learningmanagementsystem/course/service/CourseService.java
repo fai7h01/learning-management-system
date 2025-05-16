@@ -15,5 +15,4 @@ public class CourseService {
         this.courseMapper = courseMapper;
     }
 
-
 }

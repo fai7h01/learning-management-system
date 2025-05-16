@@ -18,8 +18,8 @@ public class Course extends BaseEntity {
     private BigDecimal coinsPaid;
     @OneToOne
     private CourseSettings settings;
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> lesson;
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "courses")
     private List<Student> students;
 }

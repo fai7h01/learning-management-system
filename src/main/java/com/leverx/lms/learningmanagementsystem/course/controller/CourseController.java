@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static org.springframework.http.ResponseEntity.noContent;
+
 @RestController
 @RequestMapping("/api/v1/courses")
 public class CourseController extends BaseController {
@@ -44,6 +46,6 @@ public class CourseController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable("id") UUID id) {
         courseService.delete(id);
-        return ResponseEntity.noContent().build();
+        return noContent().build();
     }
 }

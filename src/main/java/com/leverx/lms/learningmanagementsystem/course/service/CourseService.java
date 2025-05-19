@@ -7,6 +7,7 @@ import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepositor
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -23,23 +24,27 @@ public class CourseService {
         this.courseMapper = courseMapper;
     }
 
+    @Transactional
     public CourseDto create(CourseDto courseDto) {
         var course = courseMapper.toEntity(courseDto);
         var savedCourse = courseRepository.save(course);
         return courseMapper.toDto(savedCourse);
     }
 
+    @Transactional(readOnly = true)
     public CourseDto getById(UUID id) {
         var course = courseRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
         return courseMapper.toDto(course);
     }
 
+    @Transactional(readOnly = true)
     public Page<CourseDto> getAll(Pageable pageable) {
         return courseRepository.findAll(pageable)
                 .map(courseMapper::toDto);
     }
 
+    @Transactional
     public CourseDto update(UUID id, CourseDto courseDto) {
         var course = courseRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
@@ -48,6 +53,7 @@ public class CourseService {
         return courseMapper.toDto(updatedCourse);
     }
 
+    @Transactional
     public void delete(UUID id) {
         var course = courseRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));

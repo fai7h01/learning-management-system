@@ -7,6 +7,7 @@ import com.leverx.lms.learningmanagementsystem.lesson.repository.LessonRepositor
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -23,23 +24,27 @@ public class LessonService {
         this.lessonMapper = lessonMapper;
     }
 
+    @Transactional
     public LessonDto create(LessonDto lessonDto) {
         var lesson = lessonMapper.toEntity(lessonDto);
         var savedLesson = lessonRepository.save(lesson);
         return lessonMapper.toDto(savedLesson);
     }
 
+    @Transactional(readOnly = true)
     public LessonDto getById(UUID id) {
         var lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Lesson not found", NOT_FOUND));
         return lessonMapper.toDto(lesson);
     }
 
+    @Transactional(readOnly = true)
     public Page<LessonDto> getAll(Pageable pageable) {
         return lessonRepository.findAll(pageable)
                 .map(lessonMapper::toDto);
     }
 
+    @Transactional
     public LessonDto update(UUID id, LessonDto lessonDto) {
         var lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Lesson not found", NOT_FOUND));
@@ -48,6 +53,7 @@ public class LessonService {
         return lessonMapper.toDto(updatedLesson);
     }
 
+    @Transactional
     public void delete(UUID id) {
         var lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Lesson not found", NOT_FOUND));

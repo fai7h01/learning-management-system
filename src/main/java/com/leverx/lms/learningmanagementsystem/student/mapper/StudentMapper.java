@@ -5,6 +5,7 @@ import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = CourseMapper.class)
 public interface StudentMapper {
@@ -14,4 +15,6 @@ public interface StudentMapper {
 
     @Mapping(target = "courses", ignore = true)
     Student toEntity(StudentDto studentDto);
+
+    void updateEntity(StudentDto studentDto, @MappingTarget Student student);
 }

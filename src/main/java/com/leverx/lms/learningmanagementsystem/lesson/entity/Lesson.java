@@ -3,8 +3,16 @@ package com.leverx.lms.learningmanagementsystem.lesson.entity;
 import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "lessons")
 @SQLRestriction("is_deleted = false")
@@ -15,28 +23,4 @@ public class Lesson extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
 }

@@ -1,9 +1,7 @@
 package com.leverx.lms.learningmanagementsystem.base.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -11,6 +9,11 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "UUID")
     private UUID id;
 }

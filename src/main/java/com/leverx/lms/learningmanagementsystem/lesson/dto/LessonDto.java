@@ -1,6 +1,5 @@
 package com.leverx.lms.learningmanagementsystem.lesson.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 
@@ -8,7 +7,6 @@ import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 public record LessonDto(
         String title,
         Integer duration,
-        @JsonBackReference
         CourseDto course
 ) {
 }

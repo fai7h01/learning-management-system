@@ -34,4 +34,16 @@ public class CourseController extends BaseController {
     public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto) {
         return buildCreatedResponse(courseService.create(courseDto));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCourse(@PathVariable("id") UUID id,
+                                          @RequestBody CourseDto courseDto) {
+        return buildSuccessResponse(courseService.update(id, courseDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable("id") UUID id) {
+        courseService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

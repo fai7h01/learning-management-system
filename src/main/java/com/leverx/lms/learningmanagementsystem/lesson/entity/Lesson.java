@@ -3,9 +3,11 @@ package com.leverx.lms.learningmanagementsystem.lesson.entity;
 import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "lessons")
+@SQLRestriction("is_deleted = false")
 public class Lesson extends BaseEntity {
 
     private String title;

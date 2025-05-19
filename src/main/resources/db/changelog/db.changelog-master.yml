@@ -13,6 +13,9 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: is_deleted
+                  type: BOOLEAN
+              - column:
                   name: start_date
                   type: TIMESTAMP
               - column:
@@ -34,6 +37,9 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+              - column:
+                  name: is_deleted
+                  type: BOOLEAN
               - column:
                   name: title
                   type: VARCHAR(255)
@@ -69,6 +75,9 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: is_deleted
+                  type: BOOLEAN
+              - column:
                   name: title
                   type: VARCHAR(255)
               - column:
@@ -98,6 +107,9 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+              - column:
+                  name: is_deleted
+                  type: BOOLEAN
               - column:
                   name: first_name
                   type: VARCHAR(255)

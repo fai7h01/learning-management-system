@@ -8,9 +8,11 @@ import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record CourseDto(
+        UUID id,
         String title,
         String description,
         BigDecimal price,

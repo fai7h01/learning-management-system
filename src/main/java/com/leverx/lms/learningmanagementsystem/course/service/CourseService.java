@@ -39,4 +39,19 @@ public class CourseService {
         return courseRepository.findAll(pageable)
                 .map(courseMapper::toDto);
     }
+
+    public CourseDto update(UUID id, CourseDto courseDto) {
+        var course = courseRepository.findById(id)
+                .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
+        courseMapper.updateEntity(courseDto, course);
+        var updatedCourse = courseRepository.save(course);
+        return courseMapper.toDto(updatedCourse);
+    }
+
+    public void delete(UUID id) {
+        var course = courseRepository.findById(id)
+                .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
+        course.setDeleted(true);
+        courseRepository.save(course);
+    }
 }

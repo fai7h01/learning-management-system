@@ -3,6 +3,7 @@ package com.leverx.lms.learningmanagementsystem.student.entity;
 import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "students")
+@SQLRestriction("is_deleted = false")
 public class Student extends BaseEntity {
 
     private String firstName;

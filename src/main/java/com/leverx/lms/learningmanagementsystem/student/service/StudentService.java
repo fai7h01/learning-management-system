@@ -62,4 +62,8 @@ public class StudentService {
         student.setDeleted(true);
         studentRepository.save(student);
     }
+
+    public void enroll() {
+
+    }
 }

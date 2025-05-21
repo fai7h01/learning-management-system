@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -59,5 +61,13 @@ public class CourseService {
                 .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
         course.setDeleted(true);
         courseRepository.save(course);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CourseDto> findAllByStartDate(LocalDateTime startDate) {
+        return courseRepository.findAllBySettings_StartDate(startDate)
+                .stream()
+                .map(courseMapper::toDto)
+                .toList();
     }
 }

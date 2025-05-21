@@ -14,7 +14,25 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yml
+  main:
+    allow-circular-references: true
 
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  info:
+    env:
+      enabled: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
 
   h2:
     console:

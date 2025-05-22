@@ -24,15 +24,10 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
-    private final StudentService studentService;
-    private final MailService mailService;
 
-    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper, @Lazy StudentService studentService,
-                         MailService mailService) {
+    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;
-        this.studentService = studentService;
-        this.mailService = mailService;
     }
 
     @Transactional
@@ -77,27 +72,6 @@ public class CourseService {
                 .toList();
     }
 
-    @Transactional
-    public void enrollStudent(UUID courseId, UUID studentId) {
-        var course = getById(courseId);
-        var student = studentService.getById(studentId);
-        course.students().add(student);
-        courseRepository.save(courseMapper.toEntity(course));
-        mailService.sendMail(student.email(), "Enrollment Confirmation",
-                "You have been successfully enrolled in the course: " + course.title());
-    }
-
-    @Transactional
-    public void dropStudent(UUID courseId, UUID studentId) {
-        var course = getById(courseId);
-        var student = studentService.getById(studentId);
-        course.students().remove(student);
-        courseRepository.save(courseMapper.toEntity(course));
-        mailService.sendMail(student.email(), "Enrollment Cancellation",
-                "You have been removed from the course: " + course.title());
-    }
-
-    @Transactional(readOnly = true)
     public Course getEntityById(UUID id) {
         return courseRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));

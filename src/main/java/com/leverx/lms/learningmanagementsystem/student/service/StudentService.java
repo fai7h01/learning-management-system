@@ -1,6 +1,8 @@
 package com.leverx.lms.learningmanagementsystem.student.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+import com.leverx.lms.learningmanagementsystem.base.service.MailService;
+import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
 import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -22,11 +25,13 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final CourseService courseService;
+    private final MailService mailService;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, CourseService courseService) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, CourseService courseService, MailService mailService) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.courseService = courseService;
+        this.mailService = mailService;
     }
 
     @Transactional
@@ -38,7 +43,7 @@ public class StudentService {
 
     @Transactional(readOnly = true)
     public StudentDto getById(UUID id) {
-        return studentMapper.toDto(getEntityById(id));
+        return studentMapper.toDto(this.getEntityById(id));
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +54,7 @@ public class StudentService {
 
     @Transactional
     public StudentDto update(UUID id, StudentDto studentDto) {
-        var student = getEntityById(id);
+        var student = this.getEntityById(id);
         studentMapper.updateEntity(studentDto, student);
         var updatedStudent = studentRepository.save(student);
         return studentMapper.toDto(updatedStudent);
@@ -57,12 +62,11 @@ public class StudentService {
 
     @Transactional
     public void delete(UUID id) {
-        var student = getEntityById(id);
+        var student = this.getEntityById(id);
         student.setDeleted(true);
         studentRepository.save(student);
     }
 
-    @Transactional(readOnly = true)
     public Student getEntityById(UUID id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
@@ -70,14 +74,24 @@ public class StudentService {
 
     @Transactional
     public void buyCourse(UUID studentId, UUID courseId) {
-        var student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
+        var student = this.getEntityById(studentId);
         var course = courseService.getEntityById(courseId);
-        if (student.getCoins().compareTo(course.getPrice()) < 0) {
-            throw new BaseException("Insufficient coins to buy the course", HttpStatus.BAD_REQUEST);
+        validateBalance(student.getCoins(), course.getPrice());
+        processCoursePurchase(student, course);
+    }
+
+    public void validateBalance(BigDecimal balance, BigDecimal price) {
+        if (balance.compareTo(price) < 0) {
+            throw new BaseException("Not enough coins", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public void processCoursePurchase(Student student, Course course) {
         student.setCoins(student.getCoins().subtract(course.getPrice()));
         student.getCourses().add(course);
         studentRepository.save(student);
+        mailService.sendMail(student.getEmail(),
+                "Course Purchase Confirmation",
+                "You have successfully purchased the course: " + course.getTitle());
     }
 }

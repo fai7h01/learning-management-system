@@ -1,9 +1,11 @@
 package com.leverx.lms.learningmanagementsystem.course.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.mapper.CourseMapper;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
+import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,14 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
+    private final StudentService studentService;
+    private final MailService mailService;
 
-    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper) {
+    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper, StudentService studentService, MailService mailService) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;
+        this.studentService = studentService;
+        this.mailService = mailService;
     }
 
     @Transactional
@@ -69,5 +75,25 @@ public class CourseService {
                 .stream()
                 .map(courseMapper::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public void enrollStudent(UUID courseId, UUID studentId) {
+        var course = getById(courseId);
+        var student = studentService.getById(studentId);
+        course.students().add(student);
+        courseRepository.save(courseMapper.toEntity(course));
+        mailService.sendMail(student.email(), "Enrollment Confirmation",
+                "You have been successfully enrolled in the course: " + course.title());
+    }
+
+    @Transactional
+    public void dropStudent(UUID courseId, UUID studentId) {
+        var course = getById(courseId);
+        var student = studentService.getById(studentId);
+        course.students().remove(student);
+        courseRepository.save(courseMapper.toEntity(course));
+        mailService.sendMail(student.email(), "Enrollment Cancellation",
+                "You have been removed from the course: " + course.title());
     }
 }

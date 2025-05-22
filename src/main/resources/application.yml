@@ -34,6 +34,16 @@ management:
     sampling:
       probability: 1.0
 
+  mail:
+    host: live.smtp.mailtrap.io
+    port: 587
+    username: smtp@mailtrap.io
+    password: 9b5d6099dc1f5bed4e89c4e4a93fa91c
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+
   h2:
     console:
       enabled: true

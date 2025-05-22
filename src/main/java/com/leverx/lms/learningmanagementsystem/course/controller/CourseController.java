@@ -48,4 +48,18 @@ public class CourseController extends BaseController {
         courseService.delete(id);
         return noContent().build();
     }
+
+    @PostMapping("/{courseId}/students/{studentId}")
+    public ResponseEntity<Void> enrollStudent(@PathVariable UUID courseId,
+                                              @PathVariable UUID studentId) {
+        courseService.enrollStudent(courseId, studentId);
+        return noContent().build();
+    }
+
+    @DeleteMapping("/{courseId}/students/{studentId}")
+    public ResponseEntity<Void> dropStudent(@PathVariable UUID courseId,
+                                            @PathVariable UUID studentId) {
+        courseService.dropStudent(courseId, studentId);
+        return noContent().build();
+    }
 }

@@ -6,11 +6,9 @@ import com.leverx.lms.learningmanagementsystem.student.mapper.StudentMapper;
 import com.leverx.lms.learningmanagementsystem.student.repository.StudentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -61,9 +59,5 @@ public class StudentService {
                 .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
         student.setDeleted(true);
         studentRepository.save(student);
-    }
-
-    public void enroll() {
-
     }
 }

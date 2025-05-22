@@ -10,6 +10,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   liquibase:
     enabled: true
@@ -42,9 +46,3 @@ management:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
-
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console

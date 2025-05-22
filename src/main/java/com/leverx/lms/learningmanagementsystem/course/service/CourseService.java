@@ -3,9 +3,11 @@ package com.leverx.lms.learningmanagementsystem.course.service;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
 import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
+import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import com.leverx.lms.learningmanagementsystem.course.mapper.CourseMapper;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
 import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,8 @@ public class CourseService {
     private final StudentService studentService;
     private final MailService mailService;
 
-    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper, StudentService studentService, MailService mailService) {
+    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper, @Lazy StudentService studentService,
+                         MailService mailService) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;
         this.studentService = studentService;
@@ -41,8 +44,7 @@ public class CourseService {
 
     @Transactional(readOnly = true)
     public CourseDto getById(UUID id) {
-        var course = courseRepository.findById(id)
-                .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
+        var course = getEntityById(id);
         return courseMapper.toDto(course);
     }
 
@@ -54,8 +56,7 @@ public class CourseService {
 
     @Transactional
     public CourseDto update(UUID id, CourseDto courseDto) {
-        var course = courseRepository.findById(id)
-                .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
+        var course = getEntityById(id);
         courseMapper.updateEntity(courseDto, course);
         var updatedCourse = courseRepository.save(course);
         return courseMapper.toDto(updatedCourse);
@@ -63,8 +64,7 @@ public class CourseService {
 
     @Transactional
     public void delete(UUID id) {
-        var course = courseRepository.findById(id)
-                .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
+        var course = getEntityById(id);
         course.setDeleted(true);
         courseRepository.save(course);
     }
@@ -95,5 +95,11 @@ public class CourseService {
         courseRepository.save(courseMapper.toEntity(course));
         mailService.sendMail(student.email(), "Enrollment Cancellation",
                 "You have been removed from the course: " + course.title());
+    }
+
+    @Transactional(readOnly = true)
+    public Course getEntityById(UUID id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));
     }
 }

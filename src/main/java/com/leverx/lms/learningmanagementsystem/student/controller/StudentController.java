@@ -48,4 +48,10 @@ public class StudentController extends BaseController {
         studentService.delete(id);
         return noContent().build();
     }
+
+    @PostMapping("/{studentId}/courses/{courseId}")
+    public ResponseEntity<Void> buyCourse(@PathVariable UUID studentId, @PathVariable UUID courseId) {
+        studentService.buyCourse(studentId, courseId);
+        return noContent().build();
+    }
 }

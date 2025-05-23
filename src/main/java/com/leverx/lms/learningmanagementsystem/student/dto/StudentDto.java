@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record StudentDto(
         @JsonProperty(access = READ_ONLY)

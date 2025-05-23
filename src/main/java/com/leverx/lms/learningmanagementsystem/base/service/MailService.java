@@ -3,6 +3,7 @@ package com.leverx.lms.learningmanagementsystem.base.service;
 import com.leverx.lms.learningmanagementsystem.base.config.MailConfig;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,7 @@ public class MailService {
         this.mailConfig = mailConfig;
     }
 
+    @Async
     public void sendMail(String to, String subject, String text) {
         var mail = new SimpleMailMessage();
         mail.setTo(to);

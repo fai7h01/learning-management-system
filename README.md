@@ -7,6 +7,6 @@ This service is a core part of the LMS platform, responsible for student, course
 ### Running Locally
 
 ```bash
-mvn clean build
-java -jar build/libs/learning-management-system-0.0.1.jar
+mvn clean install
+java -jar target/learning-management-system-0.0.1.jar
 ```

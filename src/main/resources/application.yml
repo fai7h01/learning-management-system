@@ -38,6 +38,14 @@ management:
     sampling:
       probability: 1.0
 
+
+sap:
+  ffs:
+    uri: https://feature-flags.cfapps.us10.hana.ondemand.com
+    clientid: sb-feature-flags-binding-13937c39-3e92-4d9b-a5ee-312eb30bc1c5!b438003|feature-flags!b1765
+    clientsecret: aa_wfc5MPbfQfomzLcrA7CZ62pXr+I=
+
+
   mail:
     host: live.smtp.mailtrap.io
     port: 587

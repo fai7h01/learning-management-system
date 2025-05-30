@@ -31,6 +31,7 @@
         <mapstruct-version>1.6.3</mapstruct-version>
         <openapi.version>2.8.8</openapi.version>
         <sap-cf-version>3.5.0</sap-cf-version>
+        <sap-cloud-sdk-version>5.18.0</sap-cloud-sdk-version>
     </properties>
     <dependencies>
         <dependency>
@@ -92,6 +93,24 @@
             <groupId>com.sap.hcp.cf.logging</groupId>
             <artifactId>cf-java-logging-support-logback</artifactId>
             <version>${sap-cf-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+            <artifactId>cloudplatform-connectivity-scp-cf</artifactId>
+            <version>${sap-cloud-sdk-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

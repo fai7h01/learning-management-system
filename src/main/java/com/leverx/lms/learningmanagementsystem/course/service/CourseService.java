@@ -1,5 +1,6 @@
 package com.leverx.lms.learningmanagementsystem.course.service;
 
+import com.leverx.lms.learningmanagementsystem.base.enums.ProcessorType;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
 import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
@@ -42,7 +43,6 @@ public class CourseService {
         return courseMapper.toDto(savedCourse);
     }
 
-    @Transactional(readOnly = true)
     public CourseDto getById(UUID id) {
         var course = getEntityById(id);
         return courseMapper.toDto(course);
@@ -84,7 +84,7 @@ public class CourseService {
         course.students().add(student);
         courseRepository.save(courseMapper.toEntity(course));
         mailService.sendMail(student.email(), "Enrollment Confirmation",
-                "You have been successfully enrolled in the course: " + course.title());
+                "You have been successfully enrolled in the course: " + course.title(), ProcessorType.DESTINATION_SERVICE);
     }
 
     @Transactional
@@ -94,10 +94,10 @@ public class CourseService {
         course.students().remove(student);
         courseRepository.save(courseMapper.toEntity(course));
         mailService.sendMail(student.email(), "Enrollment Cancellation",
-                "You have been removed from the course: " + course.title());
+                "You have been removed from the course: " + course.title(), ProcessorType.DESTINATION_SERVICE);
     }
 
-    @Transactional(readOnly = true)
+
     public Course getEntityById(UUID id) {
         return courseRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Course not found", NOT_FOUND));

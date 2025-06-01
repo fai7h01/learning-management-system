@@ -9,8 +9,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Getter
 @Configuration
-@ConfigurationProperties(prefix = "spring.mail")
-public class MailConfig {
+@ConfigurationProperties(prefix = "mail-service")
+public class UserProvidedMailServiceConfig {
 
     private String host;
     private String port;

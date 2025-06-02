@@ -1,5 +1,4 @@
-server:
-  port: 10000
+
 
 spring:
   datasource:
@@ -49,3 +48,7 @@ mail-service:
   port: ${VCAP_SERVICES.user-provided.credentials.port}
   username: ${VCAP_SERVICES.user-provided.credentials.username}
   password: ${VCAP_SERVICES.user-provided.credentials.password}
+
+
+server:
+  port: 10000

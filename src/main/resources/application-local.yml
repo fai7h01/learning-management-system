@@ -1,0 +1,51 @@
+server:
+  port: 10000
+
+spring:
+  datasource:
+    url: ${vcap.services.lms-hana-schema.credentials.url}
+    username: ${vcap.services.lms-hana-schema.credentials.user}
+    password: ${vcap.services.lms-hana-schema.credentials.password}
+    driver-class-name: com.sap.db.jdbc.Driver
+
+  jpa:
+    properties:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.HANAColumnStoreDialect
+      hibernate:
+        default_schema: LMS-HANA-DB
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yml
+  main:
+    allow-circular-references: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  info:
+    env:
+      enabled: true
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+
+sap:
+  ffs:
+    uri: ${ffs_credentials_uri}
+    username: ${ffs_credentials_username}
+    password: ${ffs_credentials_password}
+
+mail-service:
+  host: ${VCAP_SERVICES.user-provided.credentials.host}
+  port: ${VCAP_SERVICES.user-provided.credentials.port}
+  username: ${VCAP_SERVICES.user-provided.credentials.username}
+  password: ${VCAP_SERVICES.user-provided.credentials.password}

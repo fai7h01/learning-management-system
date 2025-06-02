@@ -3,9 +3,12 @@ applications:
     random-route: true
     path: ./target/learning-management-system-1.0.0.jar
     memory: 1024M
+    enable-ssh: true
     buildpacks:
       - sap_java_buildpack_jakarta
     env:
+      SPRING_PROFILES_ACTIVE: cloud
       TARGET_RUNTIME: tomcat
       JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
       JBP_CONFIG_SAP_MACHINE_JDK: "{ version: 21.+}"
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:10000"

@@ -23,8 +23,8 @@ public class CourseController extends BaseController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllCourses(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        return buildPaginatedResponse(courseService.getAll(pageable));
+    public ResponseEntity<?> getAllCourses() {
+        return buildSuccessResponse(courseService.getAll());
     }
 
     @GetMapping("/{id}")

@@ -2,7 +2,6 @@ package com.leverx.lms.learningmanagementsystem.base.service;
 
 import com.leverx.lms.learningmanagementsystem.base.config.FeatureFlagConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -14,17 +13,19 @@ import java.util.Base64;
 public class FeatureFlagService {
 
     private final WebClient webClient;
+    private final FeatureFlagConfig config;
 
     public FeatureFlagService(FeatureFlagConfig config) {
+        this.config = config;
         webClient = WebClient.builder()
-                .baseUrl(config.getUri())
-                .defaultHeader("Authorization", "Basic " + encodeBase64(config.getUsername(), config.getPassword()))
+                .baseUrl(this.config.getUri() + "/api/v1/evaluate")
+                .defaultHeader("Authorization", "Basic " + encodeBase64(this.config.getUsername(), this.config.getPassword()))
                 .build();
     }
 
     public boolean isEnabled(String feature) {
         return webClient.get()
-                .uri("/{feature}", feature)
+                .uri("/" + feature)
                 .exchangeToMono(response -> {
                     int status = response.statusCode().value();
                     switch (status) {

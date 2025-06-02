@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {StudentMapper.class, CourseSettingsMapper.class, LessonMapper.class})
 public interface CourseMapper {
 
@@ -16,6 +18,8 @@ public interface CourseMapper {
     @Mapping(target = "lessons", ignore = true)
     @Mapping(target = "students", ignore = true)
     Course toEntity(CourseDto courseDto);
+
+    List<CourseDto> toDtoList(List<Course> courses);
 
     @Mapping(target = "lessons", ignore = true)
     @Mapping(target = "students", ignore = true)

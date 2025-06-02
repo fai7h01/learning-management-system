@@ -2,6 +2,7 @@ package com.leverx.lms.learningmanagementsystem.course.service;
 
 import com.leverx.lms.learningmanagementsystem.base.enums.ProcessorType;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+import com.leverx.lms.learningmanagementsystem.base.service.FeatureFlagService;
 import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
@@ -9,8 +10,7 @@ import com.leverx.lms.learningmanagementsystem.course.mapper.CourseMapper;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
 import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +27,15 @@ public class CourseService {
     private final CourseMapper courseMapper;
     private final StudentService studentService;
     private final MailService mailService;
+    private final FeatureFlagService featureFlagService;
 
     public CourseService(CourseRepository courseRepository, CourseMapper courseMapper, @Lazy StudentService studentService,
-                         MailService mailService) {
+                         MailService mailService, FeatureFlagService featureFlagService) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;
         this.studentService = studentService;
         this.mailService = mailService;
+        this.featureFlagService = featureFlagService;
     }
 
     @Transactional
@@ -49,9 +51,11 @@ public class CourseService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CourseDto> getAll(Pageable pageable) {
-        return courseRepository.findAll(pageable)
-                .map(courseMapper::toDto);
+    public List<CourseDto> getAll() {
+        if (featureFlagService.isEnabled("course-by-description")) {
+            return courseMapper.toDtoList(courseRepository.findAll(Sort.by("description")));
+        }
+        return courseMapper.toDtoList(courseRepository.findAll());
     }
 
     @Transactional
@@ -84,7 +88,7 @@ public class CourseService {
         course.students().add(student);
         courseRepository.save(courseMapper.toEntity(course));
         mailService.sendMail(student.email(), "Enrollment Confirmation",
-                "You have been successfully enrolled in the course: " + course.title(), ProcessorType.DESTINATION_SERVICE);
+                "You have been successfully enrolled in the course: " + course.title());
     }
 
     @Transactional
@@ -94,7 +98,7 @@ public class CourseService {
         course.students().remove(student);
         courseRepository.save(courseMapper.toEntity(course));
         mailService.sendMail(student.email(), "Enrollment Cancellation",
-                "You have been removed from the course: " + course.title(), ProcessorType.DESTINATION_SERVICE);
+                "You have been removed from the course: " + course.title());
     }
 
 

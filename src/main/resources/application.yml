@@ -41,12 +41,12 @@ management:
 
 sap:
   ffs:
-    uri: ${vcap.services.lms_ffs.credentials.uri}
-    username: ${vcap.services.lms_ffs.credentials.username}
-    password: ${vcap.services.lms_ffs.credentials.password}
+    uri: ${ffs_credentials_uri}
+    username: ${ffs_credentials_username}
+    password: ${ffs_credentials_password}
 
 mail-service:
-  host: ${vcap.services.mail-service.credentials.host}
-  port: ${vcap.services.mail-service.credentials.port}
-  username: ${vcap.services.mail-service.credentials.username}
-  password: ${vcap.services.mail-service.credentials.password}
+  host: ${VCAP_SERVICES.user-provided.credentials.host}
+  port: ${VCAP_SERVICES.user-provided.credentials.port}
+  username: ${VCAP_SERVICES.user-provided.credentials.username}
+  password: ${VCAP_SERVICES.user-provided.credentials.password}

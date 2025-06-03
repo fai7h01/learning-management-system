@@ -1,6 +1,7 @@
 package com.leverx.lms.learningmanagementsystem.student.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
 import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -70,14 +72,24 @@ public class StudentService {
 
     @Transactional
     public void buyCourse(UUID studentId, UUID courseId) {
-        var student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
+        var student = this.getEntityById(studentId);
         var course = courseService.getEntityById(courseId);
-        if (student.getCoins().compareTo(course.getPrice()) < 0) {
-            throw new BaseException("Insufficient coins to buy the course", HttpStatus.BAD_REQUEST);
+        validateBalance(student.getCoins(), course.getPrice());
+        processCoursePurchase(student, course);
+    }
+
+    public void validateBalance(BigDecimal balance, BigDecimal price) {
+        if (balance.compareTo(price) < 0) {
+            throw new BaseException("Not enough coins", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public void processCoursePurchase(Student student, Course course) {
         student.setCoins(student.getCoins().subtract(course.getPrice()));
         student.getCourses().add(course);
         studentRepository.save(student);
+        mailService.sendMail(student.getEmail(),
+                "Course Purchase Confirmation",
+                "You have successfully purchased the course: " + course.getTitle());
     }
 }

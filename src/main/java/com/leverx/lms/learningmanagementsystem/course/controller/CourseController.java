@@ -32,6 +32,11 @@ public class CourseController extends BaseController {
         return buildSuccessResponse(courseService.getById(id));
     }
 
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<?> getCoursesByStudentId(@PathVariable UUID studentId) {
+        return buildSuccessResponse(courseService.getAllByStudentId(studentId));
+    }
+
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto) {
         return buildCreatedResponse(courseService.create(courseDto));
@@ -46,20 +51,6 @@ public class CourseController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(@PathVariable("id") UUID id) {
         courseService.delete(id);
-        return noContent().build();
-    }
-
-    @PostMapping("/{courseId}/students/{studentId}")
-    public ResponseEntity<Void> enrollStudent(@PathVariable UUID courseId,
-                                              @PathVariable UUID studentId) {
-        courseService.enrollStudent(courseId, studentId);
-        return noContent().build();
-    }
-
-    @DeleteMapping("/{courseId}/students/{studentId}")
-    public ResponseEntity<Void> dropStudent(@PathVariable UUID courseId,
-                                            @PathVariable UUID studentId) {
-        courseService.dropStudent(courseId, studentId);
         return noContent().build();
     }
 }

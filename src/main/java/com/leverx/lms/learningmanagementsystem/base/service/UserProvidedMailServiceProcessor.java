@@ -1,15 +1,15 @@
 package com.leverx.lms.learningmanagementsystem.base.service;
 
-import com.leverx.lms.learningmanagementsystem.base.config.UserProvidedMailServiceConfig;
+import com.leverx.lms.learningmanagementsystem.base.config.MailServiceConfig;
 import com.leverx.lms.learningmanagementsystem.base.dto.MailConfig;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserProvidedMailServiceProcessor implements MailProcessor {
 
-    private final UserProvidedMailServiceConfig mailConfig;
+    private final MailServiceConfig mailConfig;
 
-    public UserProvidedMailServiceProcessor(UserProvidedMailServiceConfig mailConfig) {
+    public UserProvidedMailServiceProcessor(MailServiceConfig mailConfig) {
         this.mailConfig = mailConfig;
     }
 

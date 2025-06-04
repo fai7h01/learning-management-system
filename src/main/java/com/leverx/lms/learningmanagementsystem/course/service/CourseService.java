@@ -1,8 +1,6 @@
 package com.leverx.lms.learningmanagementsystem.course.service;
 
-import com.leverx.lms.learningmanagementsystem.base.enums.ProcessorType;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
-import com.leverx.lms.learningmanagementsystem.base.service.FeatureFlagService;
 import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
@@ -10,7 +8,6 @@ import com.leverx.lms.learningmanagementsystem.course.mapper.CourseMapper;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
 import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,15 +24,13 @@ public class CourseService {
     private final CourseMapper courseMapper;
     private final StudentService studentService;
     private final MailService mailService;
-    private final FeatureFlagService featureFlagService;
 
     public CourseService(CourseRepository courseRepository, CourseMapper courseMapper, @Lazy StudentService studentService,
-                         MailService mailService, FeatureFlagService featureFlagService) {
+                         MailService mailService) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;
         this.studentService = studentService;
         this.mailService = mailService;
-        this.featureFlagService = featureFlagService;
     }
 
     @Transactional
@@ -50,11 +45,15 @@ public class CourseService {
         return courseMapper.toDto(course);
     }
 
+    public List<CourseDto> getAllByStudentId(UUID studentId) {
+        return courseRepository.findAllByStudents_Id(studentId)
+                .stream()
+                .map(courseMapper::toDto)
+                .toList();
+    }
+
     @Transactional(readOnly = true)
     public List<CourseDto> getAll() {
-        if (featureFlagService.isEnabled("course-by-description")) {
-            return courseMapper.toDtoList(courseRepository.findAll(Sort.by("description")));
-        }
         return courseMapper.toDtoList(courseRepository.findAll());
     }
 
@@ -100,6 +99,7 @@ public class CourseService {
         mailService.sendMail(student.email(), "Enrollment Cancellation",
                 "You have been removed from the course: " + course.title());
     }
+
 
 
     public Course getEntityById(UUID id) {

@@ -1,11 +1,9 @@
-
-
 spring:
   datasource:
-    url: ${vcap.services.lms-hana-schema.credentials.url}
-    username: ${vcap.services.lms-hana-schema.credentials.user}
-    password: ${vcap.services.lms-hana-schema.credentials.password}
-    driver-class-name: com.sap.db.jdbc.Driver
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
 
   jpa:
     properties:
@@ -43,11 +41,11 @@ sap:
     username: ${ffs_credentials_username}
     password: ${ffs_credentials_password}
 
-mail-service:
-  host: ${VCAP_SERVICES.user-provided.credentials.host}
-  port: ${VCAP_SERVICES.user-provided.credentials.port}
-  username: ${VCAP_SERVICES.user-provided.credentials.username}
-  password: ${VCAP_SERVICES.user-provided.credentials.password}
+  mail:
+    host: ${VCAP_SERVICES.user-provided.credentials.host}
+    port: ${VCAP_SERVICES.user-provided.credentials.port}
+    username: ${VCAP_SERVICES.user-provided.credentials.username}
+    password: ${VCAP_SERVICES.user-provided.credentials.password}
 
 
 server:

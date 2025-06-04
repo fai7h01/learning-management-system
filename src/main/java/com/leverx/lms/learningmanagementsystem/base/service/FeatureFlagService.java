@@ -2,12 +2,14 @@ package com.leverx.lms.learningmanagementsystem.base.service;
 
 import com.leverx.lms.learningmanagementsystem.base.config.FeatureFlagConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Base64;
 
+@Profile("cloud")
 @Slf4j
 @Service
 public class FeatureFlagService {

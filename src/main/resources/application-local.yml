@@ -1,19 +1,27 @@
-server:
-  port: 10000
-
 spring:
-  datasource:
-    url: ${vcap.services.lms-hana-schema.credentials.url}
-    username: ${vcap.services.lms-hana-schema.credentials.user}
-    password: ${vcap.services.lms-hana-schema.credentials.password}
-    driver-class-name: com.sap.db.jdbc.Driver
-
-  jpa:
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: 15e480430baf53
+    password: 4cca59adb66747
     properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:h2:file:./data/testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
       ddl-auto: none
-      dialect: org.hibernate.dialect.HANAColumnStoreDialect
-      hibernate:
-        default_schema: LMS-HANA-DB
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   liquibase:
     enabled: true
@@ -38,14 +46,3 @@ management:
     sampling:
       probability: 1.0
 
-sap:
-  ffs:
-    uri: ${ffs_credentials_uri}
-    username: ${ffs_credentials_username}
-    password: ${ffs_credentials_password}
-
-mail-service:
-  host: ${VCAP_SERVICES.user-provided.credentials.host}
-  port: ${VCAP_SERVICES.user-provided.credentials.port}
-  username: ${VCAP_SERVICES.user-provided.credentials.username}
-  password: ${VCAP_SERVICES.user-provided.credentials.password}

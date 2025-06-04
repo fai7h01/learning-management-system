@@ -1,6 +1,7 @@
 package com.leverx.lms.learningmanagementsystem.student.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
 import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
@@ -22,11 +23,13 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final CourseService courseService;
+    private final MailService mailService;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, CourseService courseService) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, CourseService courseService, MailService mailService) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.courseService = courseService;
+        this.mailService = mailService;
     }
 
     @Transactional
@@ -62,7 +65,7 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    @Transactional(readOnly = true)
+
     public Student getEntityById(UUID id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
@@ -78,6 +81,8 @@ public class StudentService {
         }
         student.setCoins(student.getCoins().subtract(course.getPrice()));
         student.getCourses().add(course);
+        mailService.sendMail(student.getEmail(), "Enrollment Confirmation",
+                "You have been successfully enrolled in the course: " + course.getTitle());
         studentRepository.save(student);
     }
 }

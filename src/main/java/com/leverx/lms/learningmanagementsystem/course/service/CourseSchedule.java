@@ -20,5 +20,6 @@ public class CourseSchedule {
     public void collectCourses() {
         var tomorrow = LocalDateTime.now().plusDays(1);
         var courses = courseService.findAllByStartDate(tomorrow);
+        log.info("Courses starting tomorrow: {}", courses.size());
     }
 }

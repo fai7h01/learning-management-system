@@ -19,6 +19,7 @@ public record CourseSettingsDto(
         LocalDateTime startDate,
         @NotNull(message = "End date is required")
         LocalDateTime endDate,
+        @NotNull
         Boolean isPublic
 ) {
 }

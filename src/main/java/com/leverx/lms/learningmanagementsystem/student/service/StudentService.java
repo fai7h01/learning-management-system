@@ -2,7 +2,6 @@ package com.leverx.lms.learningmanagementsystem.student.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
 import com.leverx.lms.learningmanagementsystem.base.service.MailService;
-import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
 import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -43,7 +41,7 @@ public class StudentService {
 
     @Transactional(readOnly = true)
     public StudentDto getById(UUID id) {
-        return studentMapper.toDto(this.getEntityById(id));
+        return studentMapper.toDto(getEntityById(id));
     }
 
     @Transactional(readOnly = true)
@@ -54,7 +52,7 @@ public class StudentService {
 
     @Transactional
     public StudentDto update(UUID id, StudentDto studentDto) {
-        var student = this.getEntityById(id);
+        var student = getEntityById(id);
         studentMapper.updateEntity(studentDto, student);
         var updatedStudent = studentRepository.save(student);
         return studentMapper.toDto(updatedStudent);
@@ -62,10 +60,11 @@ public class StudentService {
 
     @Transactional
     public void delete(UUID id) {
-        var student = this.getEntityById(id);
+        var student = getEntityById(id);
         student.setDeleted(true);
         studentRepository.save(student);
     }
+
 
     public Student getEntityById(UUID id) {
         return studentRepository.findById(id)
@@ -74,24 +73,16 @@ public class StudentService {
 
     @Transactional
     public void buyCourse(UUID studentId, UUID courseId) {
-        var student = this.getEntityById(studentId);
+        var student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
         var course = courseService.getEntityById(courseId);
-        validateBalance(student.getCoins(), course.getPrice());
-        processCoursePurchase(student, course);
-    }
-
-    public void validateBalance(BigDecimal balance, BigDecimal price) {
-        if (balance.compareTo(price) < 0) {
-            throw new BaseException("Not enough coins", HttpStatus.BAD_REQUEST);
+        if (student.getCoins().compareTo(course.getPrice()) < 0) {
+            throw new BaseException("Insufficient coins to buy the course", HttpStatus.BAD_REQUEST);
         }
-    }
-
-    public void processCoursePurchase(Student student, Course course) {
         student.setCoins(student.getCoins().subtract(course.getPrice()));
         student.getCourses().add(course);
+        mailService.sendMail(student.getEmail(), "Enrollment Confirmation",
+                "You have been successfully enrolled in the course: " + course.getTitle());
         studentRepository.save(student);
-        mailService.sendMail(student.getEmail(),
-                "Course Purchase Confirmation",
-                "You have successfully purchased the course: " + course.getTitle());
     }
 }

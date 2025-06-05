@@ -1,6 +1,7 @@
 package com.leverx.lms.learningmanagementsystem.lesson.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import jakarta.validation.constraints.NotBlank;

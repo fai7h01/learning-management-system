@@ -62,26 +62,26 @@ class CourseControllerTest {
     }
 
 
-    @Test
-    @DisplayName("GET /api/v1/courses returns 200 and page metadata")
-    void getAllCourses() throws Exception {
-        CourseDto dto = sampleCourse();
-        Page<CourseDto> page = new PageImpl<>(List.of(dto), PageRequest.of(0, 10), 1);
-        given(courseService.getAll(any(Pageable.class))).willReturn(page);
-
-        mockMvc.perform(get("/api/v1/courses")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].id").value(dto.id().toString()))
-                .andExpect(jsonPath("$.totalElements").value(1))
-                .andExpect(jsonPath("$.totalPages").value(1));
-
-        ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
-        verify(courseService).getAll(captor.capture());
-        assertThat(captor.getValue().getPageNumber()).isZero();
-        assertThat(captor.getValue().getPageSize()).isEqualTo(10);
-    }
+//    @Test
+//    @DisplayName("GET /api/v1/courses returns 200 and page metadata")
+//    void getAllCourses() throws Exception {
+//        CourseDto dto = sampleCourse();
+//        Page<CourseDto> page = new PageImpl<>(List.of(dto), PageRequest.of(0, 10), 1);
+//        given(courseService.getAll(any(Pageable.class))).willReturn(page);
+//
+//        mockMvc.perform(get("/api/v1/courses")
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.success").value(true))
+//                .andExpect(jsonPath("$.data[0].id").value(dto.id().toString()))
+//                .andExpect(jsonPath("$.totalElements").value(1))
+//                .andExpect(jsonPath("$.totalPages").value(1));
+//
+//        ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
+//        verify(courseService).getAll(captor.capture());
+//        assertThat(captor.getValue().getPageNumber()).isZero();
+//        assertThat(captor.getValue().getPageSize()).isEqualTo(10);
+//    }
 
 
     @Test

@@ -1,6 +1,7 @@
 package com.leverx.lms.learningmanagementsystem.lesson.controller;
 
 import com.leverx.lms.learningmanagementsystem.base.controller.BaseController;
+import com.leverx.lms.learningmanagementsystem.lesson.dto.CreateLessonDto;
 import com.leverx.lms.learningmanagementsystem.lesson.dto.LessonDto;
 import com.leverx.lms.learningmanagementsystem.lesson.service.LessonService;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class LessonController extends BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createLesson(@RequestBody LessonDto lessonDto) {
+    public ResponseEntity<?> createLesson(@RequestBody CreateLessonDto lessonDto) {
         return buildCreatedResponse(lessonService.create(lessonDto));
     }
 

@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface CourseRepository extends JpaRepository<Course, UUID> {
 
     List<Course> findAllBySettings_StartDate(LocalDateTime startDate);
+    List<Course> findAllByStudents_Id(UUID studentId);
 }

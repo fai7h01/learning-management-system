@@ -6,23 +6,28 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Setter
 @Getter
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "UUID")
+    @GeneratedValue
+    @UuidGenerator
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "id",
+            nullable = false,
+            updatable = false,
+            columnDefinition = "CHAR(36)")
     private UUID id;
 
-    private boolean isDeleted;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 }

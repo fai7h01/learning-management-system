@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -33,7 +33,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -54,7 +54,7 @@ databaseChangeLog:
                   type: DECIMAL(19,2)
               - column:
                   name: settings_id
-                  type: UUID
+                  type: CHAR(36)
         - addForeignKeyConstraint:
             baseTableName: courses
             baseColumnNames: settings_id
@@ -70,7 +70,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -85,7 +85,7 @@ databaseChangeLog:
                   type: INT
               - column:
                   name: course_id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
@@ -103,7 +103,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -134,12 +134,12 @@ databaseChangeLog:
             columns:
               - column:
                   name: student_id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     nullable: false
               - column:
                   name: course_id
-                  type: UUID
+                  type: CHAR(36)
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:

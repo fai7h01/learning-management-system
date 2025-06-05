@@ -3,8 +3,6 @@ package com.leverx.lms.learningmanagementsystem.course.controller;
 import com.leverx.lms.learningmanagementsystem.base.controller.BaseController;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,20 +1,27 @@
 spring:
+  mail:
+    host: ${vcap.services.mail-service.credentials.host}
+    port: ${vcap.services.mail-service.credentials.port}
+    username: ${vcap.services.mail-service.credentials.username}
+    password: ${vcap.services.mail-service.credentials.password}
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
+    url: ${vcap.services.lms-hana-schema.credentials.url}
+    username: ${vcap.services.lms-hana-schema.credentials.user}
+    password: ${vcap.services.lms-hana-schema.credentials.password}
+    driver-class-name: com.sap.db.jdbc.Driver
   jpa:
     properties:
       ddl-auto: none
-      dialect: org.hibernate.dialect.HANAColumnStoreDialect
       hibernate:
+        dialect: org.hibernate.dialect.HANAColumnStoreDialect
         default_schema: LMS-HANA-DB
 
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yml
+    default-schema: LMS-HANA-DB
+    liquibase-schema: LMS-HANA-DB
+
   main:
     allow-circular-references: true
 
@@ -40,13 +47,6 @@ sap:
     uri: ${ffs_credentials_uri}
     username: ${ffs_credentials_username}
     password: ${ffs_credentials_password}
-
-  mail:
-    host: ${VCAP_SERVICES.user-provided.credentials.host}
-    port: ${VCAP_SERVICES.user-provided.credentials.port}
-    username: ${VCAP_SERVICES.user-provided.credentials.username}
-    password: ${VCAP_SERVICES.user-provided.credentials.password}
-
 
 server:
   port: 10000

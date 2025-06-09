@@ -1,7 +1,8 @@
 package com.leverx.lms.learningmanagementsystem.student.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
-import com.leverx.lms.learningmanagementsystem.base.service.MailService;
+import com.leverx.lms.learningmanagementsystem.base.service.lock.LockService;
+import com.leverx.lms.learningmanagementsystem.base.service.mail.MailService;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
 import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
@@ -24,12 +25,14 @@ public class StudentService {
     private final StudentMapper studentMapper;
     private final CourseService courseService;
     private final MailService mailService;
+    private final LockService lockService;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, CourseService courseService, MailService mailService) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, CourseService courseService, MailService mailService, LockService lockService) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.courseService = courseService;
         this.mailService = mailService;
+        this.lockService = lockService;
     }
 
     @Transactional
@@ -73,16 +76,26 @@ public class StudentService {
 
     @Transactional
     public void buyCourse(UUID studentId, UUID courseId) {
-        var student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
-        var course = courseService.getEntityById(courseId);
-        if (student.getCoins().compareTo(course.getPrice()) < 0) {
-            throw new BaseException("Insufficient coins to buy the course", HttpStatus.BAD_REQUEST);
+        var key = "buy-course:" + studentId;
+        try (AutoCloseable ignored = lockService.acquireLock(key, "Purchase already in progress")) {
+            var student = studentRepository.findById(studentId)
+                    .orElseThrow(() -> new BaseException("Student not found", NOT_FOUND));
+            var course = courseService.getEntityById(courseId);
+            if (student.getCourses().contains(course)) {
+                throw new BaseException("Student already enrolled in this course", HttpStatus.BAD_REQUEST);
+            }
+            if (student.getCoins().compareTo(course.getPrice()) < 0) {
+                throw new BaseException("Insufficient coins to buy the course", HttpStatus.BAD_REQUEST);
+            }
+            student.setCoins(student.getCoins().subtract(course.getPrice()));
+            student.getCourses().add(course);
+            mailService.sendMail(student.getEmail(), "Enrollment Confirmation",
+                    "You have been successfully enrolled in the course: " + course.getTitle());
+            studentRepository.save(student);
+        } catch (BaseException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BaseException("Failed to buy course", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        student.setCoins(student.getCoins().subtract(course.getPrice()));
-        student.getCourses().add(course);
-        mailService.sendMail(student.getEmail(), "Enrollment Confirmation",
-                "You have been successfully enrolled in the course: " + course.getTitle());
-        studentRepository.save(student);
     }
 }

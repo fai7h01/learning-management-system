@@ -1,4 +1,4 @@
-package com.leverx.lms.learningmanagementsystem.base.service;
+package com.leverx.lms.learningmanagementsystem.base.service.ffs;
 
 import com.leverx.lms.learningmanagementsystem.base.config.FeatureFlagConfig;
 import lombok.extern.slf4j.Slf4j;

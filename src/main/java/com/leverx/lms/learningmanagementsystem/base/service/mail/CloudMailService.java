@@ -1,6 +1,7 @@
-package com.leverx.lms.learningmanagementsystem.base.service;
+package com.leverx.lms.learningmanagementsystem.base.service.mail;
 
 import com.leverx.lms.learningmanagementsystem.base.enums.ProcessorType;
+import com.leverx.lms.learningmanagementsystem.base.service.ffs.FeatureFlagService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
@@ -26,7 +27,7 @@ public class CloudMailService implements MailService {
         var processorType = getProcessorType();
         var processor = mailFactory.getProcessor(processorType);
         var mailConfig = processor.getMailConfig();
-        var configuredMailSender = MailSenderConfig.getJavaMailSender(mailConfig);
+        var configuredMailSender = MailSenderUtil.getJavaMailSender(mailConfig);
 
         var message = new SimpleMailMessage();
         message.setFrom(mailConfig.username());

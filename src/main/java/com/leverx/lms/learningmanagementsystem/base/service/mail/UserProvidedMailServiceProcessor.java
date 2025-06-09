@@ -1,4 +1,4 @@
-package com.leverx.lms.learningmanagementsystem.base.service;
+package com.leverx.lms.learningmanagementsystem.base.service.mail;
 
 import com.leverx.lms.learningmanagementsystem.base.config.MailServiceConfig;
 import com.leverx.lms.learningmanagementsystem.base.dto.MailConfig;
@@ -17,6 +17,7 @@ public class UserProvidedMailServiceProcessor implements MailProcessor {
     public MailConfig getMailConfig() {
         return MailConfig.builder()
                 .host(mailConfig.getHost())
+                .port(mailConfig.getPort())
                 .username(mailConfig.getUsername())
                 .password(mailConfig.getPassword())
                 .build();

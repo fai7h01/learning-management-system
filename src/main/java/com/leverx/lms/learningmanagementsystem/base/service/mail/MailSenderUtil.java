@@ -1,12 +1,12 @@
-package com.leverx.lms.learningmanagementsystem.base.service;
+package com.leverx.lms.learningmanagementsystem.base.service.mail;
 
 import com.leverx.lms.learningmanagementsystem.base.dto.MailConfig;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-public class MailSenderConfig {
+public class MailSenderUtil {
 
-    private MailSenderConfig() {}
+    private MailSenderUtil() {}
 
     private static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
     private static final String MAIL_SMTP_STARTTLS = "mail.smtp.starttls.enable";

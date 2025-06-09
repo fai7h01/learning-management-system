@@ -1,15 +1,10 @@
 package com.leverx.lms.learningmanagementsystem.course.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
-import com.leverx.lms.learningmanagementsystem.base.service.MailService;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import com.leverx.lms.learningmanagementsystem.course.mapper.CourseMapper;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
-import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,16 +32,21 @@ public class CourseService {
         return courseMapper.toDto(savedCourse);
     }
 
-    @Transactional(readOnly = true)
     public CourseDto getById(UUID id) {
         var course = getEntityById(id);
         return courseMapper.toDto(course);
     }
 
+    public List<CourseDto> getAllByStudentId(UUID studentId) {
+        return courseRepository.findAllByStudents_Id(studentId)
+                .stream()
+                .map(courseMapper::toDto)
+                .toList();
+    }
+
     @Transactional(readOnly = true)
-    public Page<CourseDto> getAll(Pageable pageable) {
-        return courseRepository.findAll(pageable)
-                .map(courseMapper::toDto);
+    public List<CourseDto> getAll() {
+        return courseMapper.toDtoList(courseRepository.findAll());
     }
 
     @Transactional

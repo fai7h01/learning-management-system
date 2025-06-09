@@ -1,6 +1,9 @@
 package com.leverx.lms.learningmanagementsystem.lesson.service;
 
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
+import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
+import com.leverx.lms.learningmanagementsystem.lesson.dto.CreateLessonDto;
 import com.leverx.lms.learningmanagementsystem.lesson.dto.LessonDto;
 import com.leverx.lms.learningmanagementsystem.lesson.mapper.LessonMapper;
 import com.leverx.lms.learningmanagementsystem.lesson.repository.LessonRepository;
@@ -18,15 +21,18 @@ public class LessonService {
 
     private final LessonRepository lessonRepository;
     private final LessonMapper lessonMapper;
+    private final CourseService courseService;
 
-    public LessonService(LessonRepository lessonRepository, LessonMapper lessonMapper) {
+    public LessonService(LessonRepository lessonRepository, LessonMapper lessonMapper, CourseService courseService) {
         this.lessonRepository = lessonRepository;
         this.lessonMapper = lessonMapper;
+        this.courseService = courseService;
     }
 
     @Transactional
-    public LessonDto create(LessonDto lessonDto) {
-        var lesson = lessonMapper.toEntity(lessonDto);
+    public LessonDto create(CreateLessonDto request) {
+        CourseDto course = courseService.getById(request.getCourseId());
+        var lesson = lessonMapper.toEntity(request, course);
         var savedLesson = lessonRepository.save(lesson);
         return lessonMapper.toDto(savedLesson);
     }

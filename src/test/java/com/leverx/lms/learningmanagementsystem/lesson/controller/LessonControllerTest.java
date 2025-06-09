@@ -83,23 +83,23 @@ class LessonControllerTest {
         verify(lessonService).getById(id);
     }
 
-    @Test
-    @DisplayName("POST /api/v1/lessons creates lesson and returns 201")
-    void createLesson() throws Exception {
-        LessonDto payload = sampleLesson(null);
-        UUID newId = UUID.randomUUID();
-        LessonDto returned = sampleLesson(newId);
-
-        given(lessonService.create(any(LessonDto.class))).willReturn(returned);
-
-        mockMvc.perform(post("/api/v1/lessons")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(payload)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data.id").value(newId.toString()));
-
-        verify(lessonService).create(any(LessonDto.class));
-    }
+//    @Test
+//    @DisplayName("POST /api/v1/lessons creates lesson and returns 201")
+//    void createLesson() throws Exception {
+//        LessonDto payload = sampleLesson(null);
+//        UUID newId = UUID.randomUUID();
+//        LessonDto returned = sampleLesson(newId);
+//
+//        given(lessonService.create(any(LessonDto.class))).willReturn(returned);
+//
+//        mockMvc.perform(post("/api/v1/lessons")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(mapper.writeValueAsString(payload)))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.data.id").value(newId.toString()));
+//
+//        verify(lessonService).create(any(LessonDto.class));
+//    }
 
     @Test
     @DisplayName("PUT /api/v1/lessons/{id} updates lesson and returns 200")

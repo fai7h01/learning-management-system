@@ -2,22 +2,18 @@ package com.leverx.lms.learningmanagementsystem.base.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
 
 import static com.leverx.lms.learningmanagementsystem.base.enums.UserRole.MANAGER;
-import static com.leverx.lms.learningmanagementsystem.base.enums.UserRole.USER;
+import static com.leverx.lms.learningmanagementsystem.base.enums.UserRole.STUDENT;
 
 @Configuration
-public class SecurityConfig {
+public class InMemoryUsersConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -27,28 +23,17 @@ public class SecurityConfig {
     @Bean
     public UserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User
-                .withUsername("user")
-                .password(passwordEncoder.encode("user123"))
-                .roles(USER.getDescription())
+                .withUsername(STUDENT.getDescription())
+                .password(passwordEncoder.encode("student123"))
+                .roles(STUDENT.getDescription())
                 .build();
 
         UserDetails manager = User
-                .withUsername("manager")
+                .withUsername(MANAGER.getDescription())
                 .password(passwordEncoder.encode("manager123"))
                 .roles(MANAGER.getDescription())
                 .build();
 
         return new InMemoryUserDetailsManager(user, manager);
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/**").hasRole(MANAGER.getDescription())
-                        .anyRequest().hasRole(USER.getDescription())
-                )
-                .httpBasic(Customizer.withDefaults());
-        return http.build();
     }
 }

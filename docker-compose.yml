@@ -6,14 +6,14 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: faith
+      POSTGRES_PASSWORD: StrongPassword123
       POSTGRES_DB: postgres
       POSTGRES_HOST_AUTH_METHOD: md5
       POSTGRES_INITDB_ARGS: "--auth-host=md5 --auth-local=md5"
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-volume:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres -h localhost"]
       interval: 30s
@@ -42,5 +42,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres-data:
-    driver: local
+  postgres-volume:

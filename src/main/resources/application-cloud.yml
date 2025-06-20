@@ -1,4 +1,9 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${vcap.services.lms-auth.credentials.url}
   mail:
     host: ${vcap.services.mail-service.credentials.host}
     port: ${vcap.services.mail-service.credentials.port}

@@ -1,0 +1,65 @@
+_schema-version: "3.1"
+ID: lms
+version: 1.0.0
+parameters:
+  enable-parallel-deployments: true
+
+modules:
+  - name: learning-management-system
+    type: java
+    path: .
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean install -DskipTests
+      build-result: 'target/*.jar'
+    parameters:
+      memory: 1024M
+      buildpack: sap_java_buildpack_jakarta
+      enable-ssh: true
+      routes:
+        - route: learning-management-system-responsible-wildebeest-hd.cfapps.us10-001.hana.ondemand.com
+    properties:
+      SPRING_PROFILES_ACTIVE: cloud
+      TARGET_RUNTIME: java_main
+      JAVA_OPTS: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'
+      JBP_CONFIG_COMPONENTS: '{jres: ["com.sap.xs.java.buildpack.jdk.SAPMachineJDK"]}'
+      JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 21.+ }'
+    requires:
+      - name: lms-hana-schema
+      - name: lms-auth
+      - name: lms-logging
+      - name: lms-ffs
+      - name: my-destination
+      - name: mail-service
+
+resources:
+  - name: lms-hana-schema
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: lms-hana-schema
+
+  - name: lms-auth
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: lms-auth
+
+  - name: lms-logging
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: lms-logging
+
+  - name: lms-ffs
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: lms-ffs
+
+  - name: my-destination
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: my-destination
+
+  - name: mail-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: mail-service

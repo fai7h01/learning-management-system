@@ -2,10 +2,13 @@ package com.leverx.lms.learningmanagementsystem.base.service.mail;
 
 import com.leverx.lms.learningmanagementsystem.base.dto.MailConfig;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class DestinationMailServiceProcessor implements MailProcessor {
 
@@ -25,6 +28,7 @@ public class DestinationMailServiceProcessor implements MailProcessor {
         var user = (String) destination.get(MAIL_USER).getOrElseThrow(() -> new BaseException("SMTP user not found in destination", HttpStatus.BAD_REQUEST));
         var password = (String) destination.get(MAIL_PASSWORD).getOrElseThrow(() -> new BaseException("SMTP user not found in destination", HttpStatus.BAD_REQUEST));
 
+        log.debug("Mail configuration loaded from destination: host={}, port={}, user={}", host, port, user);
         return MailConfig.builder()
                 .host(host)
                 .port(port)

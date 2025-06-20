@@ -1,0 +1,12 @@
+{
+  "xsappname" : "learning-management-system",
+  "tenant-mode" : "dedicated",
+  "oauth2-configuration": {
+    "token-validity": 43200,
+    "redirect-uris": [
+      "https://learning-management-system-responsible-wildebeest-hd.cfapps.us10-001.hana.ondemand.com/"
+    ],
+    "refresh-token-validity": 1800,
+    "credential-types": ["binding-secret","x509"]
+  }
+}

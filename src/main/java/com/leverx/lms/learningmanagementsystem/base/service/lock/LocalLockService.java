@@ -23,7 +23,7 @@ public class LocalLockService implements LockService {
         try {
             acquired = lock.tryLock(5, TimeUnit.SECONDS);
             if (!acquired) {
-                throw new BaseException("Failed to acquire lock", HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new BaseException(errorMessage, HttpStatus.BAD_REQUEST);
             }
             long start = System.nanoTime();
             return () -> {

@@ -4,10 +4,7 @@ import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
 import com.leverx.lms.learningmanagementsystem.lesson.entity.Lesson;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
@@ -16,6 +13,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

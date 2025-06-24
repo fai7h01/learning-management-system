@@ -25,7 +25,6 @@ public class Student extends BaseEntity {
     private String email;
     private LocalDate dateOfBirth;
     private BigDecimal coins;
-
     private Locale locale;
 
     @ManyToMany

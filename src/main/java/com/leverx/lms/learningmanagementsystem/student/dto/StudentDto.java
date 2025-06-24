@@ -36,6 +36,7 @@ public record StudentDto(
         BigDecimal coins,
         @JsonManagedReference
         List<CourseDto> courses,
+        @NotNull
         Locale locale
 ) {
 }

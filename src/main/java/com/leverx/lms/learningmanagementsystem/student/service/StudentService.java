@@ -2,8 +2,6 @@ package com.leverx.lms.learningmanagementsystem.student.service;
 
 import com.leverx.lms.learningmanagementsystem.base.aspect.Lock;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
-import com.leverx.lms.learningmanagementsystem.base.service.lock.LockService;
-import com.leverx.lms.learningmanagementsystem.base.service.mail.MailService;
 import com.leverx.lms.learningmanagementsystem.base.service.mail.NotificationService;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
@@ -29,7 +27,6 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final CourseService courseService;
-    private final LockService lockService;
     private final NotificationService notificationService;
 
     @Transactional
@@ -72,7 +69,7 @@ public class StudentService {
 
     @Lock(key = "'buy-course:' + #studentId")
     @Transactional
-    public void buyCourseWithLockAnnotation(UUID studentId, UUID courseId) {
+    public void buyCourse(UUID studentId, UUID courseId) {
         var student = getEntityById(studentId);
         var course = courseService.getEntityById(courseId);
         validateBuyCourse(student, course);
@@ -80,6 +77,7 @@ public class StudentService {
         student.getCourses().add(course);
         studentRepository.save(student);
         studentRepository.flush();
+        notificationService.sendCourseStartNotification(student, course);
     }
 
     private void validateBuyCourse(Student student, Course course) {

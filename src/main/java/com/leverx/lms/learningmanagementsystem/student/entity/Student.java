@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Setter
@@ -24,6 +25,9 @@ public class Student extends BaseEntity {
     private String email;
     private LocalDate dateOfBirth;
     private BigDecimal coins;
+
+    private Locale locale;
+
     @ManyToMany
     @JoinTable(
             name = "students_courses",

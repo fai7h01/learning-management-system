@@ -11,6 +11,7 @@ import lombok.Builder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
@@ -34,6 +35,7 @@ public record StudentDto(
         @PositiveOrZero(message = "Coins cannot be negative")
         BigDecimal coins,
         @JsonManagedReference
-        List<CourseDto> courses
+        List<CourseDto> courses,
+        Locale locale
 ) {
 }

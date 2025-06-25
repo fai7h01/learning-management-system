@@ -45,7 +45,7 @@ class StudentServiceTest {
             executor.execute(() -> {
                 try {
                     start.await(); // all threads wait here
-                    studentService.buyCourseWithLockAnnotation(studentId, courseId);
+                    studentService.buyCourse(studentId, courseId);
                     success.incrementAndGet();
                 } catch (Exception e) {
                     e.printStackTrace();

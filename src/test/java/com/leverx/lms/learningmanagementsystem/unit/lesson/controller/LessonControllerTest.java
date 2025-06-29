@@ -1,4 +1,4 @@
-package com.leverx.lms.learningmanagementsystem.integration.lesson.controller;
+package com.leverx.lms.learningmanagementsystem.unit.lesson.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leverx.lms.learningmanagementsystem.config.TestSecurityConfig;

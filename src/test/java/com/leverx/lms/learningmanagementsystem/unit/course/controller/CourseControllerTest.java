@@ -1,4 +1,4 @@
-package com.leverx.lms.learningmanagementsystem.integration.course.controller;
+package com.leverx.lms.learningmanagementsystem.unit.course.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

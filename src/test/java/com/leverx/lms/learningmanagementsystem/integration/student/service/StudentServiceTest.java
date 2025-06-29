@@ -1,14 +1,18 @@
-package com.leverx.lms.learningmanagementsystem.student.service;
+package com.leverx.lms.learningmanagementsystem.integration.student.service;
 
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
+import com.leverx.lms.learningmanagementsystem.course.entity.CourseSettings;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
 import com.leverx.lms.learningmanagementsystem.student.entity.Student;
 import com.leverx.lms.learningmanagementsystem.student.repository.StudentRepository;
+import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -67,6 +71,7 @@ class StudentServiceTest {
         Student student = new Student();
         student.setFirstName("Test");
         student.setCoins(BigDecimal.valueOf(coins));
+        student.setLocale(Locale.ENGLISH);
         return studentRepository.save(student).getId();
     }
 
@@ -74,6 +79,11 @@ class StudentServiceTest {
         Course course = new Course();
         course.setTitle(title);
         course.setPrice(BigDecimal.valueOf(price));
+        CourseSettings cs = new CourseSettings();
+        cs.setStartDate(LocalDateTime.now());
+        cs.setEndDate(LocalDateTime.now().plusDays(10));
+        cs.setIsPublic(true);
+        course.setSettings(cs);
         return courseRepository.save(course).getId();
     }
 }

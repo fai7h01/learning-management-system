@@ -21,7 +21,7 @@ spring:
       pool-name: ${spring.application.name}-pool
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
     defer-datasource-initialization: false
 

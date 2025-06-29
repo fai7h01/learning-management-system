@@ -1,7 +1,8 @@
-package com.leverx.lms.learningmanagementsystem.student.controller;
+package com.leverx.lms.learningmanagementsystem.integration.student.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.leverx.lms.learningmanagementsystem.lesson.controller.LessonController;
+import com.leverx.lms.learningmanagementsystem.config.TestSecurityConfig;
+import com.leverx.lms.learningmanagementsystem.student.controller.StudentController;
 import com.leverx.lms.learningmanagementsystem.student.dto.StudentDto;
 import com.leverx.lms.learningmanagementsystem.student.service.StudentService;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +24,16 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StudentController.class)
+@Import(TestSecurityConfig.class)
 class StudentControllerTest {
 
     @Autowired

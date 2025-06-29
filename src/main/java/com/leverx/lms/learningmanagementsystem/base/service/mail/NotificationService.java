@@ -15,7 +15,7 @@ public class NotificationService {
     private final TemplateService templateService;
 
     public void sendCourseStartNotification(Student student, Course course) {
-        var locale = student.getLocale().getLanguage() != null ? student.getLocale().getLanguage() : "en";
+        var locale = student.getLocale() != null ? student.getLocale().getLanguage() : "en";
         var templateFile = String.format("course_start_%s.mustache", locale);
         Map<String, Object> model = Map.of(
                 "name", student.getFirstName(),

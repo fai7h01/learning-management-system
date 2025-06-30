@@ -2,6 +2,7 @@ package com.leverx.lms.learningmanagementsystem.student.entity;
 
 import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
+import com.leverx.lms.learningmanagementsystem.student.converter.LocaleAttributeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Student extends BaseEntity {
     private String email;
     private LocalDate dateOfBirth;
     private BigDecimal coins;
+    @Convert(converter = LocaleAttributeConverter.class)
     private Locale locale;
 
     @ManyToMany

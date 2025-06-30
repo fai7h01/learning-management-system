@@ -18,7 +18,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     @Query("SELECT c FROM Course c")
     Page<CourseDetailView> findCourseDetails(Pageable pageable);
 
-    @EntityGraph(attributePaths = "{settings, lessons}")
+    @EntityGraph(attributePaths = {"settings", "lessons"})
     List<Course> findAllBySettings_StartDate(LocalDateTime startDate);
 
     @EntityGraph(attributePaths = {"settings", "lessons"})

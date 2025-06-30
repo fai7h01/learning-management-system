@@ -26,6 +26,7 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yml
     default-schema: LMS-HANA-DB
     liquibase-schema: LMS-HANA-DB
+    clear-checksums: true
 
   main:
     allow-circular-references: true

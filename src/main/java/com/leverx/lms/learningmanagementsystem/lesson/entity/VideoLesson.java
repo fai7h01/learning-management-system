@@ -1,6 +1,7 @@
 package com.leverx.lms.learningmanagementsystem.lesson.entity;
 
 import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,9 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "video_lessons")
 @SQLRestriction("is_deleted = false")
-public class VideoLesson extends BaseEntity {
+@DiscriminatorValue(value = "VIDEO")
+public class VideoLesson extends Lesson {
 
     private String url;
     private String platform;

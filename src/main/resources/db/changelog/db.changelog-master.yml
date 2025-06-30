@@ -124,6 +124,21 @@ databaseChangeLog:
                   type: CHAR(36)
                   constraints:
                     nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+              - column:
+                  name: url
+                  type: VARCHAR(255)
+              - column:
+                  name: platform
+                  type: VARCHAR(255)
+              - column:
+                  name: location
+                  type: VARCHAR(255)
+              - column:
+                  name: capacity
+                  type: INT
         - addForeignKeyConstraint:
             baseTableName: lessons
             baseColumnNames: course_id

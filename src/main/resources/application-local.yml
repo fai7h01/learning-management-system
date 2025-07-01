@@ -13,7 +13,7 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5433/postgres
     username: postgres
     password: StrongPassword123
     driver-class-name: org.postgresql.Driver
@@ -21,7 +21,7 @@ spring:
       pool-name: ${spring.application.name}-pool
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
     defer-datasource-initialization: false
 

@@ -2,6 +2,7 @@ package com.leverx.lms.learningmanagementsystem.student.entity;
 
 import com.leverx.lms.learningmanagementsystem.base.entity.BaseEntity;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
+import com.leverx.lms.learningmanagementsystem.student.converter.LocaleAttributeConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.SQLRestriction;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Setter
@@ -24,6 +26,9 @@ public class Student extends BaseEntity {
     private String email;
     private LocalDate dateOfBirth;
     private BigDecimal coins;
+    @Convert(converter = LocaleAttributeConverter.class)
+    private Locale locale;
+
     @ManyToMany
     @JoinTable(
             name = "students_courses",

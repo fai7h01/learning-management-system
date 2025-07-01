@@ -3,8 +3,11 @@ package com.leverx.lms.learningmanagementsystem.course.service;
 import com.leverx.lms.learningmanagementsystem.base.exception.BaseException;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.entity.Course;
+import com.leverx.lms.learningmanagementsystem.course.entity.CourseDetailView;
 import com.leverx.lms.learningmanagementsystem.course.mapper.CourseMapper;
 import com.leverx.lms.learningmanagementsystem.course.repository.CourseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +48,8 @@ public class CourseService {
     }
 
     @Transactional(readOnly = true)
-    public List<CourseDto> getAll() {
-        return courseMapper.toDtoList(courseRepository.findAll());
+    public Page<CourseDetailView> getAllCourseDetails(Pageable pageable) {
+        return courseRepository.findCourseDetails(pageable);
     }
 
     @Transactional

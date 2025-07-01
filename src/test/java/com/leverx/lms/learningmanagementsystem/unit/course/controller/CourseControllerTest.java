@@ -1,8 +1,10 @@
-package com.leverx.lms.learningmanagementsystem.course.controller;
+package com.leverx.lms.learningmanagementsystem.unit.course.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.leverx.lms.learningmanagementsystem.config.TestSecurityConfig;
+import com.leverx.lms.learningmanagementsystem.course.controller.CourseController;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseDto;
 import com.leverx.lms.learningmanagementsystem.course.dto.CourseSettingsDto;
 import com.leverx.lms.learningmanagementsystem.course.service.CourseService;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CourseController.class)
+@Import(TestSecurityConfig.class)
 class CourseControllerTest {
 
     @Autowired
